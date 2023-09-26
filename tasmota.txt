@@ -1,0 +1,21 @@
+# enable esp32r4 template for rocketcontroller
+{"NAME":"huehnerstall","GPIO":[0,0,576,0,480,1,0,0,1,1,1,1,1,1,1,1,0,0,0,1,0,224,225,1152,0,0,0,0,227,226,32,33,34,0,0,35],"FLAG":0,"BASE":1}
+
+# SetOption56: Wi-Fi network scan to select strongest signal on restart 
+# SetOption13: Allow immediate action on single button press
+# SetOption80: Blinds and shutters support
+# SetOption65: Device recovery using fast power cycle detection (disable)
+
+Backlog SetOption56 1; SetOption13 1; SetOption80 1; Interlock 1,2; Interlock ON; ShutterRelay1 1; SetOption65 1; ShutterOpenDuration1 18; ShutterCloseDuration1 18
+
+# Rule1 Remote (you may need to adapt)
+# Rule2 enable "power3" if needed
+# Rule3 physical buttons on outside (optional)
+
+Rule1 ON RfReceived#Data=0x5C5402 DO POWER1 2 ENDON ON RfReceived#Data=0x5C5408 DO POWER2 2 ENDON ON RfReceived#Data=0x5C5404 DO POWER4 2 ENDON
+Rule2 ON Power1#state=1 DO POWER3 on ENDON ON Power2#state=1 DO POWER3 on ENDON ON Power1#state=0 DO POWER3 off ENDON ON Power2#state=0 DO POWER3 off ENDON
+Rule3 ON Switch1#state=2 DO ShutterClose1 ENDON ON Switch2#state=2 DO ShutterOpen1 ENDON ON Switch3#state=2 DO POWER4 ON ENDON ON Switch4#state=2 DO ShutterClose1 ENDON
+
+# Enable all Rules
+
+Backlog Rule1 1; Rule2 1; Rule3 1;
