@@ -239,15 +239,15 @@ binary_sensor:
 
   - platform: gpio
     id: btn_safety_open
-    pin: { number: "${btn_safety_open_pin}", mode: INPUT_PULLUP, inverted: true }
+    pin: { number: "${btn_safety_open_pin}", mode: INPUT_PULLUP, inverted: false }
     on_press:
-      - logger.log: "Klemmschutzkontakt geöffnet: Stallklappe wird sofort geöffnet."
+      - logger.log: "Klemmschutzkontakt AKTIV: Leitung offen / Pin HIGH. Stallklappe wird sofort geöffnet."
       #- switch.turn_on: manual_override_switch
       #- cover.open: stallklappe
     on_release:
       - logger.log:
           level: DEBUG
-          format: "Klemmschutzkontakt Flanke: INAKTIV/RUHE (state=false, Pin %s)"
+          format: "Klemmschutzkontakt Flanke: INAKTIV/RUHE (Leitung geschlossen / Pin LOW, state=false, Pin %s)"
           args:
             - '"${btn_safety_open_pin}"'
 
